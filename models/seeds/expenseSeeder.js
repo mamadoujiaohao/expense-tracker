@@ -15,9 +15,12 @@ db.on('error', () => {
 })
   
 db.once('open', async() => {
+    try{
     console.log('mongodb connected!')
-    await Expense.create({name:'test'})
+    await Expense.create({name:'test', date: Date.now(), amount:'60', categoryId:'1'})
     console.log('done')
+    process.exit()
+    } catch (error) {
+        console.log(error)
+    }
 })
-
-module.exports = db
