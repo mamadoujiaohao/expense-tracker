@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
+const db = require('./config/mongoose')
 
 if (process.env.NODE_ENV !== 'production') { require('dotenv').config()} 
 const port = process.env.PORT
