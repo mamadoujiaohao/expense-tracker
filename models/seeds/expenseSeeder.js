@@ -22,5 +22,6 @@ db.once('open', async() => {
     process.exit()
     } catch (error) {
         console.log(error)
+        process.exit()
     }
 })
