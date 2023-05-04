@@ -1,1 +1,47 @@
-<h1>expense-tracker</h1>
+<div class="container position-relative mt-5 text-center" >
+    <!--排序dropdown button-->
+    <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 mx-auto" style="width:600px;">          
+        <div class="input-group">
+        <select class="form-select rounded-0" id="sort" name="sort">
+            <option>類別</option>
+            <option>價格</option>
+            <option>名稱</option>
+        </select>
+        </div>
+    </div>
+    <!--總金額-標題-->
+    <div class="container d-flex flex-column flex-sm-row align-items-sm-center gap-2 mx-auto mt-5 rounded-0" style="width:600px;" >
+        <P><h4>總金額:</h4></P>
+    </div>
+    <!--總金額-數字-->
+    <div class="container d-flex flex-column flex-sm-row align-items-sm-center gap-2 mx-auto my-0 rounded-0" style="width:600px;" >
+        <P class="col align-self-end"><h1>數字{{expenses.amount}}</h1></P>
+    </div>
+    <!--支出項目-->
+    <ul class="record-list list-group list-group-light" style="width: 700px">
+    {{#each expenses}}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <h2 class="record-category-icon"><i class="{{this.imageUrl}}"></i></h2>
+        <div class="ms-3">
+          <h4 class="record-name fw-bold mb-1">{{ this.name }}</h4>
+          <h5 class="record-name fw-bold mb-1">${{ this.amount }}</h5>
+          <p class="record-date text-muted mb-0">{{ this.date }}</p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <form action="./expense/{{ this._id }}/edit">
+          <button type="submit" class="btn btn-lg btn-outline-primary mt-5">修改</button>
+        </form>
+        <form action="./expense/{{ this._id }}?_method=DELETE" method="POST">
+          <button type="submit" class="btn btn-lg btn-outline-primary mt-5">刪除</button>
+        </form>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+  <!--新增支出-->
+  <div class="add-btn mb-5">
+    <a href="/expense/new" class="btn btn-lg btn-outline-primary mt-5">新增支出</a>
+  </div>
+</div>  
