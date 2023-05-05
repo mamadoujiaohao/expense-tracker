@@ -18,7 +18,6 @@ router.post('/new', (req, res) => {
     Categories.findById(categoryId)
     .lean()
     .then((category)=>{
-      console.log(category.icon)
       const icon = category.icon
       Expenses.create({name,date,amount,userId,categoryId,icon})
         .then(() => {res.redirect('/')})
@@ -26,21 +25,54 @@ router.post('/new', (req, res) => {
     })
     .catch(error => console.error(error))
 })
+    
+// router.get('/:id/edit', (req, res) => {
+//   const userId = req.user._id
+//   const _id = req.params.id
+//   Expenses.findOne({_id, userId})
+//   .lean()
+//   .then((expense) => {
+//     const {name,date,amount,userId,categoryId,icon} = expense
+
+//     console.log(expense)
+//   })
+//   .catch(error => console.error(error))
+
+//   Categories.find()
+//       .lean()
+//       .then((category) => {
+//       })
+
+//       res.render('edit', {expense})
+// })  
 
 
-router.get('/expense/edit', async (req, res) => {
-    try{
-        const userId = req.user._id
-        await Expenses.find({ userId })
-        await Expenses.lean()
-        await Expenses.sort({date: 'asc'}) 
-        await res.render('home',{expense})
-        res.render('edit')
-    } catch (error) {
-        console.error(error)
-    }
+router.get('/:_id/edit', (req, res) => {
+  const userId = req.user._id
+  const _id = req.params._id
+  Expenses.findOne({ _id, userId })
+    .lean()
+    .then(expense => {
+      expense.date = expense.date.toISOString().slice(0, 10)
+      const categoryId = expense.categoryId
+      Categories.find()
+        .sort({ _id: 'asc' })
+        .lean()
+        .then(categories => {
+          Categories.findById(categoryId)
+            .then(category => {
+              const categoryName = category.name
+              icon = category.icon
+              res.render('edit', { expense, categoryId, category: categories, categoryName})
+            })
+            .catch(error => console.error(error))
+        })
+        .catch(error => console.error(error))
     })
-  
+    .catch(error => console.error(error))
+})
+
+
   module.exports = router
 
 
