@@ -6,7 +6,8 @@ const expenseSchema = new Schema({
     date:{type: Date, required: true},
     amount:{type: Number, required: true},
     userId:{type: String, required: true},
-    categoryId:{type: Number, required: true}
+    categoryId:{type: String, required: true},
+    icon:{type: String, required: true}
 })
 
 module.exports = mongoose.model('Expense', expenseSchema)
