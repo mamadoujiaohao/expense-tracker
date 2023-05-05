@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "category-seed": "node models/seeds/categorySeeder.js ",
-    "test-seed": "node models/seeds/expenseSeeder.js ",
+    "test-seed": "node models/seeds/recordSeeder.js ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
