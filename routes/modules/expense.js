@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Expenses = require('../../models/expense')
 const Categories = require('../../models/category');
-const category = require('../../models/category');
 
 router.get("/new", (req, res) => {
     Categories.find()
@@ -14,7 +13,7 @@ router.get("/new", (req, res) => {
 
 router.post('/new', (req, res) => {
     const userId = req.user._id
-    const {name ,date,amount,categoryId} = req.body 
+    let {name ,date,amount,categoryId} = req.body 
     Categories.findById(categoryId)
     .lean()
     .then((category)=>{
@@ -25,27 +24,6 @@ router.post('/new', (req, res) => {
     })
     .catch(error => console.error(error))
 })
-    
-// router.get('/:id/edit', (req, res) => {
-//   const userId = req.user._id
-//   const _id = req.params.id
-//   Expenses.findOne({_id, userId})
-//   .lean()
-//   .then((expense) => {
-//     const {name,date,amount,userId,categoryId,icon} = expense
-
-//     console.log(expense)
-//   })
-//   .catch(error => console.error(error))
-
-//   Categories.find()
-//       .lean()
-//       .then((category) => {
-//       })
-
-//       res.render('edit', {expense})
-// })  
-
 
 router.get('/:_id/edit', (req, res) => {
   const userId = req.user._id
@@ -53,7 +31,6 @@ router.get('/:_id/edit', (req, res) => {
   Expenses.findOne({ _id, userId })
     .lean()
     .then(expense => {
-      expense.date = expense.date.toISOString().slice(0, 10)
       const categoryId = expense.categoryId
       Categories.find()
         .sort({ _id: 'asc' })
@@ -72,6 +49,69 @@ router.get('/:_id/edit', (req, res) => {
     .catch(error => console.error(error))
 })
 
+// router.put("/:id", (req, res) => {
+//   const id = req.params._id;
+//   const record = req.body;
+//   Categories.findOne({ name: record.category })
+//     .then((category) => {
+//       return Expenses.findByIdAndUpdate(id, { ...record });
+//     })
+//     .then(() => res.redirect("/"))
+//     .catch((err) => console.log(err));
+// });
+
+router.put('/:_id', (req, res) => {
+  const userId = req.user._id
+  const _id = req.params._id
+  const {name,date,amount,categoryId} = req.body 
+  console.log(name+ 1)
+  Categories.findById(categoryId)
+  .lean()
+  .then((category)=>{
+    const icon = category.icon
+    console.log(name+ 2)
+  })
+  .then(() => {
+    const saveNewData = new Promise(()=>{
+      console.log(_id)
+      console.log(userId)
+      Expenses.findOne({_id, userId})
+      .lean()
+      .then((expense) => {
+        console.log(name+ 4)
+        console.log(date)
+        console.log(5)
+        console.log(expense)
+        expense.name = name
+        expense.date = new Date(date)
+        expense.amount = parseInt(amount,10)
+        expense.categoryId = categoryId
+        expense.icon = icon
+        console.log(expense)
+      })
+      // .then(async (expense)=>{
+      //   console.log('saved?')
+      //    await expense.save
+      //   console.log('saved?')
+      // })
+      
+      .catch(error => console.error(error))
+    })
+    saveNewData.save()
+  })
+  .then(()=>{return res.redirect('/')})
+  .catch(error => console.error(error))
+})
+
+router.delete('/:id', (req,res) => {
+  const userId = req.user._id
+  const _id = req.params.id
+  return Expenses.findOne({_id, userId})
+  .then(expense => {
+      expense.deleteOne()})
+  .then(() => res.redirect('/'))
+  .catch(error => console.error(error))
+})
 
   module.exports = router
 

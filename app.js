@@ -7,15 +7,15 @@ const routes = require('./routes')//express自動找index.js
 require('./config/mongoose')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
+const methodOverride = require('method-override')
 
 if (process.env.NODE_ENV !== 'production') { require('dotenv').config()} 
 const port = process.env.PORT
 
-
-
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' })) //版本7.0.7需要用exphbs.engine(),否則會報錯
 app.set('view engine', 'hbs')
 
+app.use(methodOverride('_method'))
 app.use(flash())
 app.use(bodyParser.urlencoded({ extended:true }))
 app.use(session({

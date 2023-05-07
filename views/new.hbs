@@ -23,7 +23,6 @@
             <label for="categoryId">類別<span class="text-danger">*</span></label>
             <select class="form-control" id="categoryId" name="categoryId" value=""required>
               <option value="{{categoryId}}" hidden="hidden">{{ categoryName}}</option>
-              <option value="">請選擇類別</option>
               {{#each category}}
               <option value="{{ this._id }}">{{ this.name }}</option>
               {{/each}}
