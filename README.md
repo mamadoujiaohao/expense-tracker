@@ -5,6 +5,9 @@
 <h4>建議運行環境:</h4>
 <p>Node.js@18.16.0 (不可低於14.18.0)</p>
 
+<h4>網頁版</h4>
+<p>https://pacific-everglades-15354.herokuapp.com/</p>
+
 <h4>說明</h4>
 <p>下載本程式至本機</p>
 <p>確認MongoDB已開啟</p>
